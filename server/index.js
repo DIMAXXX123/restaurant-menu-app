@@ -12,13 +12,21 @@ const settingsRoutes = require('./routes/settings');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// CORS
+// CORS — allow localhost dev + any Vercel deployment
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://restaurant-menu-app-swart.vercel.app',
-  ],
+  origin: (origin, callback) => {
+    if (
+      !origin ||
+      origin.startsWith('http://localhost') ||
+      origin.startsWith('http://127.0.0.1') ||
+      origin.endsWith('.vercel.app') ||
+      origin === process.env.FRONTEND_URL
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed: ' + origin));
+    }
+  },
   credentials: true,
 }));
 
