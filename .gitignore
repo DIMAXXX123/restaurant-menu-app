@@ -1,0 +1,14 @@
+node_modules
+.env
+dist
+build
+coverage
+.cache
+.next
+out
+.nuxt
+.svelte-kit
+.parcel-cache
+.temp
+.docusaurus
+.serverless

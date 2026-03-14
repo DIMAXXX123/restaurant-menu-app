@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node -e \"const e = require\\(''express''\\); console.log\\(''Express version:'', require\\(''./node_modules/express/package.json''\\).version\\)\")",
+      "Bash(node -e \"require\\(''dotenv''\\).config\\(\\); console.log\\(''dotenv ok''\\); require\\(''./server/db''\\); console.log\\(''db module ok''\\); require\\(''./server/telegram''\\); console.log\\(''telegram ok''\\);\")",
+      "Bash(node -e \":*)",
+      "Bash(curl -s http://localhost:4000/api/menu)",
+      "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const j=JSON.parse\\(d\\); console.log\\(''''Categories:'''', Object.keys\\(j\\)\\); console.log\\(''''Popular count:'''', j.popular?.length\\);\" 2)",
+      "Bash(1 curl:*)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''Categories:'''', list\\(d.keys\\(\\)\\)\\); print\\(''''Popular:'''', len\\(d.get\\(''''popular'''',[]\\)\\)\\)\")",
+      "Bash(curl -s \"http://localhost:4000/api/menu\" -o C:/temp_menu.json)",
+      "Bash(node -e \"const j=require\\(''C:/temp_menu.json''\\); console.log\\(''Keys:'', Object.keys\\(j\\)\\); console.log\\(''popular items:'', j.popular?.length\\);\")",
+      "Bash(npm run:*)",
+      "Bash(npx concurrently:*)",
+      "Bash(netstat -ano)",
+      "Bash(curl -s http://localhost:5173/)"
+    ]
+  }
+}
