@@ -26,7 +26,7 @@ export default function MenuAdmin() {
   const fetchItems = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/menu/all', { headers: authHeaders() });
+      const res = await fetch(`${API}/api/menu/all`, { headers: authHeaders() });
       if (res.status === 401) { navigate('/admin/login'); return; }
       setItems(await res.json());
     } catch (e) { showAlert('error', 'Failed to load items'); }
@@ -74,7 +74,7 @@ export default function MenuAdmin() {
     const fd = new FormData();
     fd.append('image', file);
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch(`${API}/api/upload`, {
         method: 'POST',
         headers: authHeaders(),
         body: fd,

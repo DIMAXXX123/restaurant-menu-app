@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 export default function Footer() {
   const { t } = useTranslation();
   const [settings, setSettings] = useState({});
 
   useEffect(() => {
-    fetch('/api/settings')
+    fetch(`${API}/api/settings`)
       .then((r) => r.json())
       .then(setSettings)
       .catch(() => {});

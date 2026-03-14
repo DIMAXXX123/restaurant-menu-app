@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 function authHeaders() {
   return { Authorization: `Bearer ${localStorage.getItem('cafe_token')}` };
 }
@@ -15,9 +17,9 @@ export default function Dashboard() {
     const fetchAll = async () => {
       try {
         const [resvRes, menuRes, adminRes] = await Promise.all([
-          fetch('/api/reservations', { headers: authHeaders() }),
-          fetch('/api/menu/all', { headers: authHeaders() }),
-          fetch('/api/auth/me', { headers: authHeaders() }),
+          fetch(`${API}/api/reservations`, { headers: authHeaders() }),
+          fetch(`${API}/api/menu/all`, { headers: authHeaders() }),
+          fetch(`${API}/api/auth/me`, { headers: authHeaders() }),
         ]);
 
         if (resvRes.status === 401 || adminRes.status === 401) {

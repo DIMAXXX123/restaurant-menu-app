@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 function authHeaders(extra = {}) {
   return { Authorization: `Bearer ${localStorage.getItem('cafe_token')}`, ...extra };
 }
@@ -18,7 +20,7 @@ export default function Settings() {
   const [savingPw, setSavingPw] = useState(false);
 
   useEffect(() => {
-    fetch('/api/settings', { headers: authHeaders() })
+    fetch(`${API}/api/settings`, { headers: authHeaders() })
       .then((r) => {
         if (r.status === 401) { navigate('/admin/login'); return; }
         return r.json();
@@ -40,7 +42,7 @@ export default function Settings() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch('/api/settings', {
+      const res = await fetch(`${API}/api/settings`, {
         method: 'PUT',
         headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(settings),
@@ -69,7 +71,7 @@ export default function Settings() {
     }
     setSavingPw(true);
     try {
-      const res = await fetch('/api/auth/change-password', {
+      const res = await fetch(`${API}/api/auth/change-password`, {
         method: 'POST',
         headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ oldPassword: pw.oldPassword, newPassword: pw.newPassword }),

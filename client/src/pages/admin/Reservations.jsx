@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 function authHeaders(extra = {}) {
   return { Authorization: `Bearer ${localStorage.getItem('cafe_token')}`, ...extra };
 }
@@ -20,7 +22,7 @@ export default function Reservations() {
   const fetchReservations = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/reservations', { headers: authHeaders() });
+      const res = await fetch(`${API}/api/reservations`, { headers: authHeaders() });
       if (res.status === 401) { navigate('/admin/login'); return; }
       setReservations(await res.json());
     } catch (e) {

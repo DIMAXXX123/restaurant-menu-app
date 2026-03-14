@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import MenuGrid from '../components/MenuGrid';
 import { useTranslation } from '../hooks/useTranslation';
 
+const API = import.meta.env.VITE_API_URL || '';
+
 export default function MenuPage() {
   const { t } = useTranslation();
   const [menuData, setMenuData] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/menu')
+    fetch(`${API}/api/menu`)
       .then((r) => {
         if (!r.ok) throw new Error('Failed to load');
         return r.json();

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 
+const API = import.meta.env.VITE_API_URL || '';
 const today = new Date().toISOString().split('T')[0];
 
 // Generate time slots 08:00 – 22:00 in 30-min steps
@@ -62,7 +63,7 @@ export default function ReservationPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/reservations', {
+      const res = await fetch(`${API}/api/reservations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, guests: parseInt(form.guests) }),
