@@ -32,6 +32,7 @@ export default function MenuGrid({ menuData }) {
             className="menu-section"
             data-section={cat}
             id={`section-${cat}`}
+            style={{ animationDelay: `${CATEGORY_ORDER.indexOf(cat) * 0.15}s` }}
           >
             <div className="section-header">
               <h2 className="section-title">{t(CATEGORY_LABELS[cat])}</h2>
@@ -40,8 +41,8 @@ export default function MenuGrid({ menuData }) {
               </span>
             </div>
             <div className="menu-grid">
-              {items.map((item) => (
-                <MenuCard key={item.id} item={item} />
+              {items.map((item, idx) => (
+                <MenuCard key={item.id} item={item} delay={idx * 0.08} />
               ))}
             </div>
           </section>

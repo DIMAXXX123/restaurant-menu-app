@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 
 const API = import.meta.env.VITE_API_URL || '';
 
-export default function MenuCard({ item }) {
+export default function MenuCard({ item, delay = 0 }) {
   const { addItem, removeItem, isInCart } = useCart();
   const inCart = isInCart(item.id);
+  const [descExpanded, setDescExpanded] = useState(false);
 
   const handleToggle = () => {
     if (inCart) {
@@ -15,8 +16,16 @@ export default function MenuCard({ item }) {
     }
   };
 
+  const hasLongDesc = item.description && item.description.length > 80;
+
+  const handleDescClick = () => {
+    if (hasLongDesc && !descExpanded) {
+      setDescExpanded(true);
+    }
+  };
+
   return (
-    <article className="menu-card">
+    <article className="menu-card" style={{ animationDelay: `${delay}s` }}>
       <div className="card-image">
         {item.image_url ? (
           <img
@@ -34,7 +43,12 @@ export default function MenuCard({ item }) {
       <div className="card-body">
         <h3 className="card-name">{item.name}</h3>
         {item.description && (
-          <p className="card-desc">{item.description}</p>
+          <p 
+            className={`card-desc ${descExpanded ? 'expanded' : ''}`}
+            onClick={handleDescClick}
+          >
+            {item.description}
+          </p>
         )}
         <div className="card-footer">
           <span className="card-price">€{Number(item.price).toFixed(2)}</span>
