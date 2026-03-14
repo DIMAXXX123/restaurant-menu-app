@@ -20,6 +20,7 @@ export default function MenuAdmin() {
   const [imgUploading, setImgUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
   const [alert, setAlert] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null); // { id, name }
 
   useEffect(() => { fetchItems(); }, []);
 
@@ -93,7 +94,7 @@ export default function MenuAdmin() {
     e.preventDefault();
     setSaving(true);
     try {
-      const url = modal === 'edit' ? `/api/menu/${editId}` : '/api/menu';
+      const url = modal === 'edit' ? `${API}/api/menu/${editId}` : `${API}/api/menu`;
       const method = modal === 'edit' ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -113,7 +114,7 @@ export default function MenuAdmin() {
 
   const toggleAvailability = async (item) => {
     try {
-      const res = await fetch(`/api/menu/${item.id}/availability`, {
+      const res = await fetch(`${API}/api/menu/${item.id}/availability`, {
         method: 'PATCH',
         headers: authHeaders(),
       });
@@ -125,9 +126,14 @@ export default function MenuAdmin() {
   };
 
   const handleDelete = async (id, name) => {
-    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    setConfirmDelete({ id, name });
+  };
+
+  const confirmDeleteAction = async () => {
+    const { id } = confirmDelete;
+    setConfirmDelete(null);
     try {
-      const res = await fetch(`/api/menu/${id}`, {
+      const res = await fetch(`${API}/api/menu/${id}`, {
         method: 'DELETE',
         headers: authHeaders(),
       });
@@ -150,6 +156,18 @@ export default function MenuAdmin() {
 
       {alert && (
         <div className={`alert alert-${alert.type}`}>{alert.msg}</div>
+      )}
+
+      {confirmDelete && (
+        <div className="confirm-overlay">
+          <div className="confirm-box">
+            <p>Delete <strong>"{confirmDelete.name}"</strong>?<br/><span>This cannot be undone.</span></p>
+            <div className="confirm-actions">
+              <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(null)}>Cancel</button>
+              <button className="btn btn-danger btn-sm" onClick={confirmDeleteAction}>Delete</button>
+            </div>
+          </div>
+        </div>
       )}
 
       <div className="admin-table-wrap">

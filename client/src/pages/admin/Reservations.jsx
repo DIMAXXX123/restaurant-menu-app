@@ -16,6 +16,7 @@ export default function Reservations() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   useEffect(() => { fetchReservations(); }, []);
 
@@ -38,7 +39,7 @@ export default function Reservations() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`/api/reservations/${id}/status`, {
+      const res = await fetch(`${API}/api/reservations/${id}/status`, {
         method: 'PATCH',
         headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ status }),
@@ -53,9 +54,14 @@ export default function Reservations() {
   };
 
   const deleteReservation = async (id) => {
-    if (!confirm('Delete this reservation?')) return;
+    setConfirmDeleteId(id);
+  };
+
+  const confirmDeleteAction = async () => {
+    const id = confirmDeleteId;
+    setConfirmDeleteId(null);
     try {
-      const res = await fetch(`/api/reservations/${id}`, {
+      const res = await fetch(`${API}/api/reservations/${id}`, {
         method: 'DELETE',
         headers: authHeaders(),
       });
@@ -97,6 +103,18 @@ export default function Reservations() {
       </div>
 
       {alert && <div className={`alert alert-${alert.type}`}>{alert.msg}</div>}
+
+      {confirmDeleteId && (
+        <div className="confirm-overlay">
+          <div className="confirm-box">
+            <p>Delete this reservation?<br/><span>This cannot be undone.</span></p>
+            <div className="confirm-actions">
+              <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDeleteId(null)}>Cancel</button>
+              <button className="btn btn-danger btn-sm" onClick={confirmDeleteAction}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:12, marginBottom:20 }}>
         <div className="filter-tabs">

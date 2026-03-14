@@ -1499,6 +1499,43 @@ tbody tr:hover { background: var(--bg2); }
 }
 
 /* ══════════════════════════════════════
+   INLINE CONFIRM DIALOG
+══════════════════════════════════════ */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.15s ease;
+}
+
+.confirm-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  text-align: center;
+  animation: slideUp 0.2s ease;
+}
+
+.confirm-box p {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.confirm-box p span { font-size: 0.82rem; color: var(--muted); }
+
+.confirm-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ══════════════════════════════════════
    CART DRAWER
 ══════════════════════════════════════ */
 .cart-overlay {
