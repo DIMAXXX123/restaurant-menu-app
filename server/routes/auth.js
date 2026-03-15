@@ -56,8 +56,8 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
     if (!oldPassword || !newPassword) {
       return res.status(400).json({ error: 'Old and new passwords are required' });
     }
-    if (newPassword.length < 6) {
-      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    if (newPassword.length < 12) {
+      return res.status(400).json({ error: 'New password must be at least 12 characters' });
     }
 
     const result = await db.query('SELECT * FROM admins WHERE id = $1', [req.admin.id]);

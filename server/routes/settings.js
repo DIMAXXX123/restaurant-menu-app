@@ -29,6 +29,7 @@ router.put('/', requireAuth, async (req, res, next) => {
 
     for (const [key, value] of Object.entries(updates)) {
       if (!allowedKeys.includes(key)) continue;
+      if (typeof value !== 'string' || value.length > 1000) continue;
       await db.query(
         `INSERT INTO cafe_settings (key, value) VALUES ($1, $2)
          ON CONFLICT (key) DO UPDATE SET value = $2`,

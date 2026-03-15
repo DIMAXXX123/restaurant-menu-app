@@ -53,10 +53,23 @@ router.post('/', requireAuth, async (req, res, next) => {
     if (!name || !price || !category) {
       return res.status(400).json({ error: 'Name, price, and category are required' });
     }
+    if (typeof name !== 'string' || name.length > 150) {
+      return res.status(400).json({ error: 'Name must be a string (max 150 chars)' });
+    }
+    if (description && (typeof description !== 'string' || description.length > 500)) {
+      return res.status(400).json({ error: 'Description must be a string (max 500 chars)' });
+    }
+    const priceNum = Number(price);
+    if (isNaN(priceNum) || priceNum < 0 || priceNum > 99999) {
+      return res.status(400).json({ error: 'Price must be a number between 0 and 99999' });
+    }
+    if (!CATEGORY_ORDER.includes(category)) {
+      return res.status(400).json({ error: 'Invalid category' });
+    }
     const result = await db.query(
       `INSERT INTO menu_items (name, description, price, category, emoji, image_url, available)
        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [name, description || '', price, category, emoji || '🍽️', image_url || null, available !== false]
+      [name, description || '', priceNum, category, emoji || '🍽️', image_url || null, available !== false]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

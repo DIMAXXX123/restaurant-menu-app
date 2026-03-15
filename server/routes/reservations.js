@@ -12,6 +12,23 @@ router.post('/', async (req, res, next) => {
     if (!guest_name || !date || !time || !guests) {
       return res.status(400).json({ error: 'Name, date, time, and guests are required' });
     }
+    // Input length & type validation
+    if (typeof guest_name !== 'string' || guest_name.length > 100) {
+      return res.status(400).json({ error: 'Guest name must be a string (max 100 chars)' });
+    }
+    if (phone && (typeof phone !== 'string' || phone.length > 30)) {
+      return res.status(400).json({ error: 'Phone must be a string (max 30 chars)' });
+    }
+    if (email && (typeof email !== 'string' || email.length > 100)) {
+      return res.status(400).json({ error: 'Email must be a string (max 100 chars)' });
+    }
+    if (notes && (typeof notes !== 'string' || notes.length > 500)) {
+      return res.status(400).json({ error: 'Notes must be a string (max 500 chars)' });
+    }
+    const guestsNum = Number(guests);
+    if (!Number.isInteger(guestsNum) || guestsNum < 1 || guestsNum > 50) {
+      return res.status(400).json({ error: 'Guests must be an integer between 1 and 50' });
+    }
 
     const result = await db.query(
       `INSERT INTO reservations (guest_name, phone, email, date, time, guests, notes)

@@ -39,14 +39,20 @@ async function run() {
     console.log('✅  Menu items seeded');
 
     // ── 3. Admin user ────────────────────────────────────────────
-    console.log('👤  Creating admin user...');
-    const hash = await bcrypt.hash('admin1234', 10);
+    console.log('Creating admin user...');
+    const adminPassword = process.env.ADMIN_PASSWORD || require('crypto').randomBytes(16).toString('hex');
+    const hash = await bcrypt.hash(adminPassword, 10);
     await client.query(`
       INSERT INTO admins (username, password_hash, email)
       VALUES ('admin', $1, 'admin@cafe.com')
       ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash
     `, [hash]);
-    console.log('✅  Admin user ready  (username: admin / password: admin1234)');
+    if (!process.env.ADMIN_PASSWORD) {
+      console.log(`Admin user ready  (username: admin / password: ${adminPassword})`);
+      console.log('   Save this password! It will not be shown again.');
+    } else {
+      console.log('Admin user ready  (username: admin / password from ADMIN_PASSWORD env)');
+    }
 
     // ── 4. Verify ────────────────────────────────────────────────
     const { rows: menuRows } = await client.query('SELECT COUNT(*) FROM menu_items');
