@@ -16,7 +16,17 @@ const PORT = process.env.PORT || 4000;
 
 // Security headers
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' }, // allow /uploads to load on frontend
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https://*.supabase.co"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+      fontSrc: ["'self'", "https:", "data:"],
+      connectSrc: ["'self'", "https://*.supabase.co"],
+    },
+  },
 }));
 
 // CORS — allow localhost dev + any Vercel deployment
