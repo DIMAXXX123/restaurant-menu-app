@@ -16,7 +16,10 @@
       "Bash(netstat -ano)",
       "Bash(curl -s http://localhost:5173/)",
       "Bash(find:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "WebFetch(domain:restaurant-menu-app-378x.onrender.com)",
+      "Bash(curl:*)",
+      "WebFetch(domain:monochrome-cafe.vercel.app)"
     ]
   }
 }
