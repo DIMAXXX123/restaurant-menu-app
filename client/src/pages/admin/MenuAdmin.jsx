@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { resolveImageUrl } from '../../utils/imageUrl';
 
 const API = import.meta.env.VITE_API_URL || '';
 const CATEGORIES = ['popular','hot-drinks','cold-drinks','breakfast','light-bites','sandwiches','mains','desserts'];
@@ -56,7 +57,7 @@ export default function MenuAdmin() {
       image_url: item.image_url || '',
       available: item.available,
     });
-    setPreviewUrl(item.image_url ? `${API}${item.image_url}` : '');
+    setPreviewUrl(item.image_url ? resolveImageUrl(item.image_url) : '');
     setEditId(item.id);
     setModal('edit');
   };
@@ -83,7 +84,7 @@ export default function MenuAdmin() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setForm((f) => ({ ...f, image_url: data.url }));
-      setPreviewUrl(`${API}${data.url}`);
+      setPreviewUrl(resolveImageUrl(data.url));
     } catch (err) {
       showAlert('error', err.message || 'Upload failed');
     }
@@ -197,7 +198,7 @@ export default function MenuAdmin() {
                     <td>
                       {item.image_url ? (
                         <img
-                          src={`${API}${item.image_url}`}
+                          src={resolveImageUrl(item.image_url)}
                           alt={item.name}
                           className="image-preview"
                           onError={(e) => { e.target.style.display='none'; }}

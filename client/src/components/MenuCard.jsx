@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-
-const API = import.meta.env.VITE_API_URL || '';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 export default function MenuCard({ item, delay = 0 }) {
   const { addItem, removeItem, isInCart } = useCart();
@@ -29,7 +28,7 @@ export default function MenuCard({ item, delay = 0 }) {
       <div className="card-image">
         {item.image_url ? (
           <img
-            src={`${API}${item.image_url}`}
+            src={resolveImageUrl(item.image_url)}
             alt={item.name}
             loading="lazy"
             onError={(e) => {

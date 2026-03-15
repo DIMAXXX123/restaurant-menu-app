@@ -2,19 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const requireAuth = require('../middleware/auth');
+const { uploadImage } = require('../supabase');
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../uploads'));
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, unique + ext);
-  },
-});
+// Use memory storage — file buffer goes straight to Supabase
+const storage = multer.memoryStorage();
 
 const ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/webp'];
 const ALLOWED_EXTS = ['.jpg', '.jpeg', '.png', '.webp'];
@@ -35,11 +28,21 @@ const upload = multer({
 });
 
 // POST /api/upload
-router.post('/', requireAuth, upload.single('image'), (req, res, next) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No image file provided' });
+router.post('/', requireAuth, upload.single('image'), async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided' });
+    }
+
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+
+    const publicUrl = await uploadImage(req.file.buffer, filename, req.file.mimetype);
+
+    res.json({ url: publicUrl });
+  } catch (err) {
+    next(err);
   }
-  res.json({ url: `/uploads/${req.file.filename}` });
 });
 
 // Multer error handler

@@ -14,7 +14,9 @@
       "Bash(npm run:*)",
       "Bash(npx concurrently:*)",
       "Bash(netstat -ano)",
-      "Bash(curl -s http://localhost:5173/)"
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(find:*)",
+      "Bash(node:*)"
     ]
   }
 }

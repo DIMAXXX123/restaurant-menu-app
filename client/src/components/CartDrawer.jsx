@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-
-const API = import.meta.env.VITE_API_URL || '';
+import { resolveImageUrl } from '../utils/imageUrl';
 
 export default function CartDrawer({ open, onClose }) {
   const { items, removeItem, updateQty, clearCart, totalPrice } = useCart();
@@ -50,7 +49,7 @@ export default function CartDrawer({ open, onClose }) {
                   <div className="cart-item-img">
                     {item.image_url ? (
                       <img
-                        src={`${API}${item.image_url}`}
+                        src={resolveImageUrl(item.image_url)}
                         alt={item.name}
                         onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
                       />
