@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://restaurant-menu-app-378x.onrender.com';
 
 function authHeaders() {
   return { Authorization: `Bearer ${localStorage.getItem('cafe_token')}` };

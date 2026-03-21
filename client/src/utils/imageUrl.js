@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://restaurant-menu-app-378x.onrender.com';
 
 /**
  * Resolves an image URL — returns full Supabase URLs as-is,

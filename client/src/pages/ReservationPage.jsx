@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://restaurant-menu-app-378x.onrender.com';
 const today = new Date().toISOString().split('T')[0];
 
 // Generate time slots 08:00 – 22:00 in 30-min steps

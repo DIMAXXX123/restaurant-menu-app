@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MenuGrid from '../components/MenuGrid';
 import { useTranslation } from '../hooks/useTranslation';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://restaurant-menu-app-378x.onrender.com';
 
 export default function MenuPage() {
   const { t } = useTranslation();

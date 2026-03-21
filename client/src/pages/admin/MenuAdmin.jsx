@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resolveImageUrl } from '../../utils/imageUrl';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://restaurant-menu-app-378x.onrender.com';
 const CATEGORIES = ['popular','hot-drinks','cold-drinks','breakfast','light-bites','sandwiches','mains','desserts'];
 const EMPTY_FORM = { name: '', description: '', price: '', category: 'popular', emoji: '🍽️', image_url: '', available: true };
 
